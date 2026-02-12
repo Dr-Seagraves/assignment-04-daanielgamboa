@@ -18,7 +18,7 @@ import requests
 
 # FRED API key (free at https://fred.stlouisfed.org/docs/api/api_key.html)
 # Option 1: Put your key here (works for you; don't commit if sharing code)
-FRED_API_KEY = ""
+FRED_API_KEY = "2d4e0b81a18afe9e3c054021a48192ee"
 
 # Option 2: If FRED_API_KEY above is empty, the script will use the FRED_API_KEY
 #            environment variable (set in terminal or .env file).
@@ -100,8 +100,15 @@ def main():
         raise SystemExit(1)
 
     # Data folder is next to this script (e.g., classroom-template/data/)
-    script_dir = Path(__file__).resolve().parent
-    data_dir = script_dir / "data"
+    data_dir = None
+    try:
+        from config_paths import DATA_DIR  # type: ignore
+
+        data_dir = DATA_DIR
+    except Exception:
+        script_dir = Path(__file__).resolve().parent
+        data_dir = script_dir / "data"
+
     data_dir.mkdir(parents=True, exist_ok=True)
 
     start = START_DATE or None
